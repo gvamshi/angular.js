@@ -13,6 +13,7 @@
     -angularModule,
     -nodeName_,
     -uid,
+    -REGEX_STRING_REGEXP,
 
     -lowercase,
     -uppercase,
@@ -101,6 +102,8 @@
  *
  * <div doc-module-components="ng"></div>
  */
+
+var REGEX_STRING_REGEXP = /^\/(.+)\/([a-z]*)$/;
 
 /**
  * @ngdoc function
@@ -510,10 +513,14 @@ function isDate(value) {
  * @param {*} value Reference to check.
  * @returns {boolean} True if `value` is an `Array`.
  */
-function isArray(value) {
-  return toString.call(value) === '[object Array]';
-}
-
+var isArray = (function() {
+  if (!isFunction(Array.isArray)) {
+    return function(value) {
+      return toString.call(value) === '[object Array]';
+    };
+  }
+  return Array.isArray;
+})();
 
 /**
  * @ngdoc function
